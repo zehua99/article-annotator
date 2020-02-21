@@ -1,0 +1,100 @@
+html, body {
+  font-size: 1.2rem;
+  font-family: georgia, 'times new roman', times, serif;
+  line-height: 1.5;
+  margin: 0;
+  padding: 0;
+}
+
+.full-container {
+  display: grid;
+  grid-template-columns: 50% 50%;
+  grid-template-rows: 100vh;
+}
+
+.article-container {
+  overflow-y: scroll;
+  padding-bottom: 4rem;
+}
+
+.article-container>* {
+  padding-left: 2rem;
+  padding-right: 2rem;
+}
+
+.article-container>p>span>span:hover {
+  cursor: pointer;
+  border-bottom: .125rem dashed #000;
+}
+
+.legends {
+  margin-top: 1.75rem;
+  position: sticky;
+  top: 0;
+  padding: .25rem 2rem;
+  background: #fff;
+}
+
+.legends span {
+  display: inline-block;
+  margin: .25rem 0;
+  line-height: 1.1;
+}
+
+.legends span:not(:last-child) {
+  margin-right: .75rem;
+}
+
+.label-container {
+  background-color: rgba(245, 245, 220, .5);
+  padding: 2rem 1rem;
+  overflow-y: scroll;
+}
+
+.label-container p, .label-container h3 {
+  padding: .6rem 1rem;
+  margin: 0;
+}
+
+.explanation {
+  padding: 1rem !important;
+  background-color: #fff;
+  border-radius: .5rem;
+  transition: all .25s;
+  overflow: hidden;
+}
+
+.sentence-card {
+  display: grid;
+  grid-template-columns: auto 1.5rem;
+  background-color: #fff;
+  cursor: pointer;
+  margin-bottom: .75rem;
+  border-radius: .5rem;
+  transition: all .25s;
+  overflow: hidden;
+}
+
+.sentence-card:hover, .explanation:hover {
+  box-shadow: 0 .25rem .5rem rgba(32, 32, 32, .1);
+}
+
+.sentence-card .side {
+  display: flex;
+  align-items: flex-end;
+  background-color: rgba(0, 0, 0, .1);
+  justify-content: center;
+  color: #fff;
+}
+
+.sentence-card.checked {
+  background-color: rgba(3, 166, 120, .2);
+}
+
+.sentence-card.checked .side {
+  background-color: rgba(3, 166, 120, .8);
+}
+
+.sentence-card.checked .side::after {
+  content: '✓';
+}
