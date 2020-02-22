@@ -1,9 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { StateType, ColorsType } from '../store/dataTypes';
 import ColorLegend from './ColorLegend';
 import Sentence from './Sentence';
-import { getColorState } from '../store/selectors/colorSelector';
+import { StateType, getAllColors } from '../store';
 
 type ArticleProps = {
   article: {
@@ -12,12 +11,12 @@ type ArticleProps = {
     sentences: string[];
     annotations: any[];
   };
-  colors?: ColorsType;
+  colors?: Record<string, string>;
 }
 
 const mapStateToProps = (state: StateType, ownProps: ArticleProps) => ({
   ...ownProps,
-  colors: getColorState(state),
+  colors: getAllColors(state),
 });
 
 class Article extends React.Component<ArticleProps, {}> {

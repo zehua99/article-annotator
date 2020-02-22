@@ -8,7 +8,7 @@ function getAlphabeticString(input: string) {
     else {
       let encoded = encodeURIComponent(input[i]);
       while (encoded.indexOf('%') >= 0) {
-        encoded = encoded.replace('%', '25');
+        encoded = encoded.replace('%', '---');
       }
       str += encoded;
     }

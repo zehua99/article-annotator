@@ -1,4 +1,6 @@
 export type ArticleType = {
+  id: number;
+  category: string;
   article: string;
   question: string;
   explanation: string;
@@ -12,7 +14,11 @@ export type AnnotationType = {
   sentenceIndex: number;
 }
 
-export type ColorsType = Record<string, string>;
+export type ColorsType = {
+  annotatorToColorMap: Record<string, string>,
+  annotatorToAnnotatorsMap: Record<string, string[]>,
+  existingCombinations: string[],
+};
 
 export type StateType = {
   username?: string;

@@ -5,6 +5,12 @@ import annotationReducer from './reducers/annotationReducer';
 import articleReducer from './reducers/articleReducer';
 import colorReducer from './reducers/colorReducer';
 
+export * from './dataTypes';
+export * from './actionTypes';
+export * from './actions';
+export * from './selectors';
+export * from './reducers';
+
 const colors = [
   'rgb(255, 227, 134)',
   'rgb(141, 195, 234)',
@@ -21,7 +27,11 @@ const defaultColors = {
 
 const initialState: StateType = {
   username: '',
-  colors: defaultColors,
+  colors: {
+    annotatorToColorMap: defaultColors,
+    annotatorToAnnotatorsMap: {},
+    existingCombinations: [],
+  },
   articles: [],
   annotations: [],
 };

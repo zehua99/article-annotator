@@ -1,8 +1,23 @@
-import { Action } from 'redux';
-import { CHANGE_COLOR } from '../actionTypes';
+import { ADD_COLORS_TO_DOCUMENT, ColorActionType } from '../actionTypes';
+import { ColorsType } from '../dataTypes';
 
-function colorReducer(state: Record<string, string> = {}, action: Action) {
-  return { ...state };
+const defaultState: ColorsType = {
+  annotatorToColorMap: {},
+  annotatorToAnnotatorsMap: {},
+  existingCombinations: [],
+};
+
+function colorReducer(state: ColorsType = defaultState, action: ColorActionType) {
+  switch (action.type) {
+    case ADD_COLORS_TO_DOCUMENT:
+      if (!state.existingCombinations.includes(action.className)) {
+        return {
+          ...state,
+          existingCombinations: [...state.existingCombinations, action.className],
+        };
+      }
+  }
+  return state;
 }
 
 export default colorReducer;

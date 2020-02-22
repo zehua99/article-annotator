@@ -1,8 +1,8 @@
-import { ColorsType } from '../store/dataTypes';
 import _ from 'lodash';
 
-function getHighlightStyle(colors: ColorsType, annotators: string[] | string) {
+function getHighlightStyle(colors: Record<string, string>, annotators: string[] | string) {
   if (_.isString(annotators)) annotators = [annotators];
+  if (annotators.length === 0) return '';
   annotators = _.uniq(annotators).sort();
 
   let style = 'background-image: linear-gradient(';

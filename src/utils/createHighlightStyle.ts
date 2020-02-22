@@ -1,12 +1,14 @@
 import addClass from './addClass';
 import getColorClassName from './getColorClassName';
 import getHighlightStyle from './getHighlightStyle';
-import { ColorsType } from '../store/dataTypes';
+import store, { addColorsToDocument, doesColorsExistInDocument, getAllColors } from '../store';
 
-function createHighlightStyle(colors: ColorsType, annotators: string[] | string) {
+function createHighlightStyle(annotators: string[] | string) {
   const className = getColorClassName(annotators);
-  const highlightStyle = getHighlightStyle(colors, annotators);
+  if (doesColorsExistInDocument(store.getState(), className)) return;
+  const highlightStyle = getHighlightStyle(getAllColors(store.getState()), annotators);
   addClass(className, highlightStyle);
+  store.dispatch(addColorsToDocument(className));
 }
 
 export default createHighlightStyle;

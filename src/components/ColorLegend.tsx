@@ -1,29 +1,15 @@
 import React from 'react';
-import { connect } from 'react-redux';
-import { StateType, ColorsType } from '../store/dataTypes';
-import { getAnnotatorColors } from '../store/selectors/colorSelector';
-import addClass from '../utils/addClass';
-import getColorClassName from '../utils/getColorClassName';
-import getHighlightStyle from '../utils/getHighlightStyle';
+import { createHighlightStyle, getColorClassName } from '../utils';
 
 type ColorLegendProps = {
   articleId: string;
   annotators: string[];
-  colors?: ColorsType;
 }
-
-const mapStateToProps = (state: StateType, ownProps: ColorLegendProps) => ({
-  ...ownProps,
-  colors: getAnnotatorColors(state, ownProps.annotators),
-});
 
 class ColorLegend extends React.Component<ColorLegendProps, {}> {
   componentDidMount() {
     for (const annotator of this.props.annotators) {
-      addClass(
-        getColorClassName(annotator),
-        getHighlightStyle({ ...this.props.colors }, annotator),
-      );
+      createHighlightStyle(annotator);
     }
   }
 
@@ -31,7 +17,7 @@ class ColorLegend extends React.Component<ColorLegendProps, {}> {
     return (
       <p className="legends">
         {this.props.annotators.map(annotator => (
-          <span className={getColorClassName([annotator])}>
+          <span className={getColorClassName([annotator])} key={annotator}>
             {annotator}
           </span>
         ))}
@@ -40,4 +26,4 @@ class ColorLegend extends React.Component<ColorLegendProps, {}> {
   }
 }
 
-export default connect(mapStateToProps)(ColorLegend);
+export default ColorLegend;
