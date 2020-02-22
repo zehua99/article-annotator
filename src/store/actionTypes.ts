@@ -1,4 +1,4 @@
-import { ArticleType } from './dataTypes';
+import { ArticleType, AnnotationType } from './dataTypes';
 
 export const ADD_ARTICLE = 'ADD_ARTICLE';
 export const REMOVE_ARTICLE = 'REMOVE_ARTICLE';
@@ -37,6 +37,17 @@ export type ArticleActionType = AddArticleActionType | RemoveArticleActionType;
 /**
  * Annotation
  */
+export type AddAnnotationActionType = {
+  type: typeof ADD_ANNOTATION
+  annotation: AnnotationType
+}
+
+export type RemoveAnnotationActionType = {
+  type: typeof REMOVE_ANNOTATION
+  annotation: AnnotationType
+}
+
+export type AnnotationActionType = AddAnnotationActionType | RemoveAnnotationActionType;
 
 /**
  * Color

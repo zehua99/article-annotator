@@ -12,6 +12,7 @@ function articleReducer(state: ArticleType[] = [], action: ArticleActionType) {
         return [...state, article];
       }
       break;
+
     case REMOVE_ARTICLE:
       for (let i = 0; i < state.length; i++) {
         if (state[i] === article) {

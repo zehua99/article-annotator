@@ -1,26 +1,34 @@
 import React from 'react';
+import { Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import ColorLegend from './ColorLegend';
 import Sentence from './Sentence';
-import { StateType, getAllColors } from '../store';
+import { StateType, ArticleType, getAllColors, getArticle, addAnnotation } from '../store';
 
 type ArticleProps = {
-  article: {
-    title?: string;
-    paragraphs: string[];
-    sentences: string[];
-    annotations: any[];
-  };
+  articleId: number,
+  category: string,
+  article?: ArticleType;
   colors?: Record<string, string>;
+  addAnnotation?: (article: ArticleType, sentenceIndex: number, annotator: string) => void;
 }
 
 const mapStateToProps = (state: StateType, ownProps: ArticleProps) => ({
   ...ownProps,
+  article: getArticle(state, ownProps.articleId, ownProps.category),
   colors: getAllColors(state),
+});
+
+const mapDispatchToProps = (dispatch: Dispatch) => ({
+  addAnnotation: (article: ArticleType, sentenceIndex: number, annotator: string) => {
+    dispatch(addAnnotation(article.id, article.category, sentenceIndex, annotator));
+  }
 });
 
 class Article extends React.Component<ArticleProps, {}> {
   getParagraph(paragraph: string, key: string) {
+    if (!this.props.article || !this.props.addAnnotation || !this.props.colors) return;
+
     let temp = paragraph.trim();
     let start = -1;
     let end = -1;
@@ -38,28 +46,24 @@ class Article extends React.Component<ArticleProps, {}> {
       }
     }
 
-    const sentences: number[] = [];
-    for (let i = start; i <= end; i++) sentences.push(i);
+    const { article, articleId, category } = this.props;
 
-    const getRandomColor = () => {
-      const annotators: string[] = [];
-      for (let i = 0; i < Object.keys(this.props.colors || {}).length; i++) {
+    const sentences: number[] = [];
+    for (let i = start; i <= end; i++) {
+      sentences.push(i);
+
+      for (let j = 0; j < Object.keys(this.props.colors).length; j++) {
         if (Math.random() > .8) {
-          annotators.push(Object.keys(this.props.colors || {})[i]);
+          this.props.addAnnotation(article, i, Object.keys(this.props.colors)[j])
         }
       }
-      return annotators;
     }
 
     return (
       <p key={key}>
-        {start === -1
-        ? <span>
-            <Sentence sentence={paragraph} annotators={getRandomColor()} />
-          </span>
-        : sentences.map((index) => (
+        {sentences.map((index) => (
           <span key={`sentence-${index}`}>
-            <Sentence sentence={this.props.article.sentences[index]} annotators={getRandomColor()}/>
+            <Sentence articleId={articleId} category={category} sentenceIndex={index} />
             {' '}
           </span>
         ))}
@@ -68,6 +72,7 @@ class Article extends React.Component<ArticleProps, {}> {
   }
 
   render() {
+    if (!this.props.article) return <div />;
     return (
       <div className="article-container">
         <ColorLegend articleId="1" annotators={['Quotes', 'XLNet', 'BERT Embedding', 'Ash’s Annotation']} />
@@ -79,4 +84,4 @@ class Article extends React.Component<ArticleProps, {}> {
   }
 }
 
-export default connect(mapStateToProps)(Article);
+export default connect(mapStateToProps, mapDispatchToProps)(Article);

@@ -4,12 +4,19 @@ import userReducer from './reducers/userReducer';
 import annotationReducer from './reducers/annotationReducer';
 import articleReducer from './reducers/articleReducer';
 import colorReducer from './reducers/colorReducer';
+import data from '../data';
 
 export * from './dataTypes';
 export * from './actionTypes';
 export * from './actions';
 export * from './selectors';
 export * from './reducers';
+
+const article = {
+  ...JSON.parse(data),
+  id: 1,
+  category: 'Question 1',
+};
 
 const colors = [
   'rgb(255, 227, 134)',
@@ -26,13 +33,13 @@ const defaultColors = {
 };
 
 const initialState: StateType = {
-  username: '',
+  username: 'Ash’s Annotation',
   colors: {
     annotatorToColorMap: defaultColors,
     annotatorToAnnotatorsMap: {},
     existingCombinations: [],
   },
-  articles: [],
+  articles: [article],
   annotations: [],
 };
 

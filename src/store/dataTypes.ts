@@ -7,11 +7,14 @@ export type ArticleType = {
   answer: number;
   paragraphs: string[];
   sentences: string[];
+  checkedSentences: number[];
 }
 
 export type AnnotationType = {
   articleId: number;
+  category: string;
   sentenceIndex: number;
+  annotator: string;
 }
 
 export type ColorsType = {
