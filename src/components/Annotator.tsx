@@ -1,47 +1,21 @@
 import React from 'react';
-import { Dispatch } from 'redux';
-import { connect } from 'react-redux';
-import {
-  StateType,
-  getAnnotatedSentences, getUsername,
-  ADD_ANNOTATION, REMOVE_ANNOTATION } from '../store';
+import { connect, ConnectedProps } from 'react-redux';
+import { StateType, getAnnotatedSentences } from '../store';
 import QuestionCard from './QuestionCard';
 import SentenceCard from './SentenceCard';
 
 type AnnotatorProps = {
   articleId: number,
   category: string,
-  annotatedSentences?: number[],
-  username?: string,
-  addAnnotation?: (articleId: number, category: string, sentenceIndex: number, annotator: string) => void,
-  removeAnnotation?: (articleId: number, category: string, sentenceIndex: number, annotator: string) => void,
 }
 
 const mapStateToProps = (state: StateType, props: AnnotatorProps) => ({
   annotatedSentences: getAnnotatedSentences(state, props.articleId, props.category),
-  username: getUsername(state),
 });
+const connector = connect(mapStateToProps);
+type PropsFromRedux = ConnectedProps<typeof connector>;
 
-const mapDispatchToProps = (dispatch: Dispatch) => ({
-  addAnnotation: (articleId: number, category: string, sentenceIndex: number, annotator: string) => {
-    dispatch({
-      type: ADD_ANNOTATION,
-      annotation: {
-        articleId, category, sentenceIndex, annotator,
-      },
-    });
-  },
-  removeAnnotation: (articleId: number, category: string, sentenceIndex: number, annotator: string) => {
-    dispatch({
-      type: REMOVE_ANNOTATION,
-      annotation: {
-        articleId, category, sentenceIndex, annotator,
-      },
-    });
-  }
-});
-
-class Annotator extends React.Component<AnnotatorProps, {}> {
+class Annotator extends React.Component<AnnotatorProps & PropsFromRedux, {}> {
   render() {
     return (
       <div className="annotator-container">
@@ -54,9 +28,24 @@ class Annotator extends React.Component<AnnotatorProps, {}> {
             sentenceIndex={sentenceIndex}
             key={`sentence-card-${sentenceIndex}`} />
         ))}
+        <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+          <span style={{
+            marginTop: '1rem',
+            marginBottom: '4rem',
+            padding: '.5rem 2rem .5rem 1rem',
+            cursor: 'pointer',
+            backgroundColor: 'rgba(233, 212, 96, 1)',
+            borderBottomLeftRadius: '.5rem',
+            borderTopLeftRadius: '.5rem',
+            marginRight: '-2rem',
+            fontSize: '1rem',
+          }}>
+            Submit Annotation ▶︎
+          </span>
+        </div>
       </div>
     )
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Annotator);
+export default connector(Annotator);

@@ -2,13 +2,12 @@ import {
   CHANGE_USERNAME,
   ChangeUsernameActionType,
   ADD_COLORS_TO_DOCUMENT,
-  AddColorsToDocumentType,
+  AddColorsToDocumentActionType,
   ADD_ANNOTATION,
   AddAnnotationActionType,
   REMOVE_ANNOTATION,
   RemoveAnnotationActionType,
 } from './actionTypes';
-import { ArticleType } from './dataTypes';
 
 export function changeUsername(username: string): ChangeUsernameActionType {
   return {
@@ -17,7 +16,7 @@ export function changeUsername(username: string): ChangeUsernameActionType {
   };
 }
 
-export function addColorsToDocument(className: string): AddColorsToDocumentType {
+export function addColorsToDocument(className: string): AddColorsToDocumentActionType {
   return {
     type: ADD_COLORS_TO_DOCUMENT,
     className,

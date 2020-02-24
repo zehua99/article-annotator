@@ -23,9 +23,19 @@ export type ColorsType = {
   existingCombinations: string[],
 };
 
+export type UtilityType = {
+  selectedSentence?: {
+    articleId: number;
+    category: string;
+    sentenceIndex: number;
+    selectedIn: 'ARTICLE_SECTION' | 'ANNOTATION_SECTION';
+  }
+}
+
 export type StateType = {
   username?: string;
   colors: ColorsType;
   articles: ArticleType[];
   annotations: AnnotationType[];
+  utils: UtilityType;
 }

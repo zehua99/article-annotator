@@ -11,6 +11,8 @@ export const ADD_COLORS_TO_DOCUMENT = 'ADD_COLORS_TO_DOCUMENT';
 
 export const CHANGE_USERNAME = 'CHANGE_USERNAME';
 
+export const CHANGE_SELECTED_TEXT = 'CHANGE_SELECTED_TEXT';
+
 /**
  * User
  */
@@ -52,9 +54,24 @@ export type AnnotationActionType = AddAnnotationActionType | RemoveAnnotationAct
 /**
  * Color
  */
-export type AddColorsToDocumentType = {
+export type AddColorsToDocumentActionType = {
   type: typeof ADD_COLORS_TO_DOCUMENT
   className: string
 }
 
-export type ColorActionType = AddColorsToDocumentType;
+export type ColorActionType = AddColorsToDocumentActionType;
+
+/**
+ * Utility
+ */
+export type ChangeSelectedTextActionType = {
+  type: typeof CHANGE_SELECTED_TEXT
+  selectedText: {
+    articleId: number
+    category: string
+    sentenceIndex: number
+    selectedIn: 'ARTICLE_SECTION' | 'ANNOTATION_SECTION'
+  }
+}
+
+export type UtilityActionType = ChangeSelectedTextActionType;

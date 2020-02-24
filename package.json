@@ -17,6 +17,7 @@
     "react-scripts": "3.4.0",
     "redux": "^4.0.5",
     "redux-thunk": "^2.3.0",
+    "scroll-into-view-if-needed": "^2.2.24",
     "typescript": "^3.8.2"
   },
   "scripts": {

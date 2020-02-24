@@ -4,6 +4,7 @@ import userReducer from './reducers/userReducer';
 import annotationReducer from './reducers/annotationReducer';
 import articleReducer from './reducers/articleReducer';
 import colorReducer from './reducers/colorReducer';
+import utilityReducer from './reducers/utilityReducer';
 import data from '../data';
 
 export * from './dataTypes';
@@ -41,6 +42,7 @@ const initialState: StateType = {
   },
   articles: [article],
   annotations: [],
+  utils: {},
 };
 
 const reducer = combineReducers({
@@ -48,6 +50,7 @@ const reducer = combineReducers({
   annotations: annotationReducer,
   articles: articleReducer,
   colors: colorReducer,
+  utils: utilityReducer,
 })
 
 export default createStore(reducer, initialState);

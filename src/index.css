@@ -15,6 +15,7 @@ html, body {
 .article-container {
   overflow-y: scroll;
   padding-bottom: 4rem;
+  scroll-behavior: smooth;
 }
 
 .article-container>* {
@@ -26,9 +27,14 @@ html, body {
   user-select: none;
 }
 
-.article-container>p>span>span:hover {
+.article-container>p>span>span {
   cursor: pointer;
-  border-bottom: .125rem dashed #000;
+  border-top: 2px solid #fff;
+  border-bottom: 2px solid #fff;
+}
+
+.article-container>p>span>span:hover {
+  border-bottom: 2px dashed #000;
 }
 
 .legends {
@@ -59,6 +65,7 @@ html, body {
   background-color: rgba(245, 245, 220, .5);
   padding: 2rem 1rem;
   overflow-y: scroll;
+  scroll-behavior: smooth;
 }
 
 .annotator-container p, .annotator-container h3 {
@@ -90,7 +97,7 @@ html, body {
 }
 
 .sentence-card:hover, .explanation:hover {
-  box-shadow: 0 .25rem .5rem rgba(32, 32, 32, .1);
+  box-shadow: 0 0 1rem rgba(32, 32, 32, .1);
 }
 
 .sentence-card .side {
@@ -99,6 +106,7 @@ html, body {
   background-color: rgba(0, 0, 0, .1);
   justify-content: center;
   color: #fff;
+  transition: all .25s;
 }
 
 .sentence-card.checked {
@@ -109,6 +117,51 @@ html, body {
   background-color: rgba(3, 166, 120, .8);
 }
 
-.sentence-card.checked .side::after {
+.sentence-card .side::after {
+  opacity: 0;
+  visibility: hidden;
+  transition: all .25s;
   content: '✓';
+}
+
+.sentence-card.checked .side::after {
+  opacity: 1;
+  visibility: visible;
+}
+
+@keyframes shakey-sentence-motion {
+  0% { transform: translateX(0) }
+  20% { transform: translateX(1.5rem) }
+  40% { transform: translateX(-1rem) }
+  60% { transform: translateX(.5rem) }
+  80% { transoform: translateX(-.25rem) }
+  100% { transform: translateX(0) }
+}
+
+.shakey-sentence {
+  animation-name: shakey-sentence-motion;
+  animation-duration: .75s;
+}
+
+@keyframes selected-sentence-highlight {
+  0% { outline: rgba(241, 130, 141, .8) solid 6px }
+  50% { outline: rgba(240, 52, 52, .8) solid 6px }
+  100% { outline: rgba(240, 52, 52, 0) solid 6px }
+}
+
+.selected-sentence {
+  animation-name: selected-sentence-highlight;
+  animation-duration: 1.5s;
+}
+
+@keyframes selected-sentence-card-highlight {
+  0% { box-shadow: 0 0 1rem rgba(3, 166, 120, 0) }
+  25% { box-shadow: 0 0 1rem rgba(3, 166, 120, .8) }
+  50% { box-shadow: 0 0 1rem rgba(3, 166, 120, .8) }
+  100% { box-shadow: 0 0 1rem rgba(3, 166, 120, 0) }
+}
+
+.selected-sentence-card {
+  animation-name: selected-sentence-card-highlight;
+  animation-duration: 1.5s;
 }

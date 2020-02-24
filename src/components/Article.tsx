@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { MouseEvent } from 'react';
 import { Dispatch } from 'redux';
-import { connect } from 'react-redux';
+import { connect, ConnectedProps } from 'react-redux';
 import ColorLegend from './ColorLegend';
 import Sentence from './Sentence';
 import { StateType, ArticleType, getAllColors, getArticle, addAnnotation } from '../store';
@@ -8,13 +8,9 @@ import { StateType, ArticleType, getAllColors, getArticle, addAnnotation } from 
 type ArticleProps = {
   articleId: number,
   category: string,
-  article?: ArticleType;
-  colors?: Record<string, string>;
-  addAnnotation?: (article: ArticleType, sentenceIndex: number, annotator: string) => void;
 }
 
 const mapStateToProps = (state: StateType, ownProps: ArticleProps) => ({
-  ...ownProps,
   article: getArticle(state, ownProps.articleId, ownProps.category),
   colors: getAllColors(state),
 });
@@ -25,9 +21,12 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
   }
 });
 
-class Article extends React.Component<ArticleProps, {}> {
+const connector = connect(mapStateToProps, mapDispatchToProps);
+type PropsFromRedux = ConnectedProps<typeof connector>;
+
+class Article extends React.Component<ArticleProps & PropsFromRedux, {}> {
   getParagraph(paragraph: string, key: string) {
-    if (!this.props.article || !this.props.addAnnotation || !this.props.colors) return;
+    if (!this.props.article) return;
 
     let temp = paragraph.trim();
     let start = -1;
@@ -53,7 +52,7 @@ class Article extends React.Component<ArticleProps, {}> {
       sentences.push(i);
 
       for (let j = 0; j < Object.keys(this.props.colors).length; j++) {
-        if (Math.random() > .8) {
+        if (Math.random() > .95) {
           this.props.addAnnotation(article, i, Object.keys(this.props.colors)[j])
         }
       }
@@ -71,10 +70,12 @@ class Article extends React.Component<ArticleProps, {}> {
     );
   }
 
+  blockContextMenu = (event: MouseEvent) => event.preventDefault();
+
   render() {
     if (!this.props.article) return <div />;
     return (
-      <div className="article-container">
+      <div className="article-container" onContextMenu={this.blockContextMenu}>
         <ColorLegend articleId="1" annotators={['Quotes', 'XLNet', 'BERT Embedding', 'Ash’s Annotation']} />
         {this.props.article.paragraphs.map((paragraph, index) => (
           this.getParagraph(paragraph, `paragraph-${index}`)
@@ -84,4 +85,4 @@ class Article extends React.Component<ArticleProps, {}> {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Article);
+export default connector(Article);
