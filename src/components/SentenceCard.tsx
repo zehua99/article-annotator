@@ -12,8 +12,8 @@ import socket from '../socket';
 const section = 'ANNOTATION_SECTION';
 
 const mapStateToProps = (state: StateType, props: SentenceCardProps) => ({
-  sentence: getSentence(state, props.articleId, props.category, props.sentenceIndex),
-  checked: isSentenceChecked(state, props.articleId, props.category, props.sentenceIndex),
+  sentence: getSentence(props.articleId, props.category, props.sentenceIndex)(state),
+  checked: isSentenceChecked(props.articleId, props.category, props.sentenceIndex)(state),
   username: getUsername(state),
   shouldScrollIntoView: shouldSentenceScrollIntoView(
     state,

@@ -5,7 +5,7 @@ import store, { addColorsToDocument, doesColorsExistInDocument, getAllColors } f
 
 function createHighlightStyle(annotators: string[] | string) {
   const className = getColorClassName(annotators);
-  if (doesColorsExistInDocument(store.getState(), className)) return;
+  if (doesColorsExistInDocument(className)(store.getState())) return;
   const highlightStyle = getHighlightStyle(getAllColors(store.getState()), annotators);
   addClass(className, highlightStyle);
   store.dispatch(addColorsToDocument(className));

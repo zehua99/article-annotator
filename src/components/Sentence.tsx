@@ -13,15 +13,16 @@ type SentenceProps = {
   sentenceIndex: number;
   articleId: number;
   category: string;
+  plainText?: boolean;
 }
 
 const section = 'ARTICLE_SECTION';
 
 const mapStateToProps = (state: StateType, props: SentenceProps) => ({
-  sentence: getSentence(state, props.articleId, props.category, props.sentenceIndex),
-  annotators: getAnnotators(state, props.articleId, props.category, props.sentenceIndex),
+  sentence: getSentence(props.articleId, props.category, props.sentenceIndex)(state),
+  annotators: getAnnotators(props.articleId, props.category, props.sentenceIndex)(state),
   username: getUsername(state),
-  shouldScrollIntoView: shouldSentenceScrollIntoView(
+  shouldScrollIntoView: props.plainText ? null : shouldSentenceScrollIntoView(
     state,
     props.articleId,
     props.category,
@@ -85,6 +86,15 @@ class Sentence extends React.Component<SentenceProps & PropsFromRedux, {}> {
   }
 
   render() {
+    if (this.props.plainText) {
+      return (
+        <span className={getColorClassName(this.props.annotators || [])}>
+          {this.props.sentence}
+          {createHighlightStyle(this.props.annotators || [])}
+        </span>
+      );
+    }
+
     return (
       <span
         ref={this.ref}

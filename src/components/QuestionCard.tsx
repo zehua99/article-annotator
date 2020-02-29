@@ -8,7 +8,7 @@ type QuestionCardProps = {
 }
 
 const mapStateToProps = (state: StateType, props: QuestionCardProps) => ({
-  article: getArticle(state, props.articleId, props.category),
+  article: getArticle(props.articleId, props.category)(state),
 });
 
 const connector = connect(mapStateToProps);

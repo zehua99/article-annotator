@@ -17,7 +17,7 @@ class ArticleCard extends React.Component<ArticleCardProps> {
       <div
         onClick={this.handleClick}
         className="article-card-container">
-        <Article {...this.props} hideLegend={true} />
+        <Article {...this.props} displayOnly={true} />
         <div className="article-container-mask" />
         <span>Article {this.props.articleId}</span>
       </div>

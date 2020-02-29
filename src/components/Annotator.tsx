@@ -11,9 +11,9 @@ type AnnotatorProps = {
 }
 
 const mapStateToProps = (state: StateType, props: AnnotatorProps) => ({
-  annotatedSentences: getAnnotatedSentences(state, props.articleId, props.category),
-  lastArticleId: getLastArticleId(state, props.articleId, props.category),
-  nextArticleId: getNextArticleId(state, props.articleId, props.category),
+  annotatedSentences: getAnnotatedSentences(props.articleId, props.category)(state),
+  lastArticleId: getLastArticleId(props.articleId, props.category)(state),
+  nextArticleId: getNextArticleId(props.articleId, props.category)(state),
 });
 const connector = connect(mapStateToProps);
 type PropsFromRedux = ConnectedProps<typeof connector>;

@@ -12,11 +12,11 @@ import {
 type ArticleProps = {
   articleId: number,
   category: string,
-  hideLegend?: boolean,
+  displayOnly?: boolean,
 }
 
 const mapStateToProps = (state: StateType, ownProps: ArticleProps) => ({
-  article: getArticle(state, ownProps.articleId, ownProps.category),
+  article: getArticle(ownProps.articleId, ownProps.category)(state),
   colors: getAllColors(state),
 });
 
@@ -87,7 +87,7 @@ class Article extends React.Component<PropsType, {}> {
       }
     }
 
-    const { articleId, category } = this.props;
+    const { articleId, category, displayOnly } = this.props;
 
     const sentences: number[] = [];
     for (let i = start; i <= end; i++) {
@@ -98,7 +98,12 @@ class Article extends React.Component<PropsType, {}> {
       <p key={key}>
         {sentences.map((index) => (
           <span key={`sentence-${index}`}>
-            <Sentence articleId={articleId} category={category} sentenceIndex={index} />
+            <Sentence
+              articleId={articleId}
+              category={category}
+              sentenceIndex={index}
+              plainText={displayOnly}
+            />
             {' '}
           </span>
         ))}
@@ -110,12 +115,22 @@ class Article extends React.Component<PropsType, {}> {
 
   render() {
     if (!this.props.article) return <div className="article-container" />;
+    if (this.props.displayOnly) {
+      return (
+        <div className="article-container">
+          {this.props.article.paragraphs.map((paragraph, index) => (
+            this.getParagraph(paragraph, `paragraph-${index}`)
+          ))}
+        </div>
+      );
+    }
+
     return (
       <div className="article-container" onContextMenu={this.blockContextMenu}>
-        {this.props.hideLegend ||
         <ColorLegend 
           articleId="1"
-          annotators={['Quotes', 'XLNet', 'BERT Embedding', 'Ash’s Annotation']} />}
+          annotators={['Quotes', 'XLNet', 'BERT Embedding', 'Ash’s Annotation']}
+        />
         {this.props.article.paragraphs.map((paragraph, index) => (
           this.getParagraph(paragraph, `paragraph-${index}`)
         ))}
