@@ -8,6 +8,7 @@ export type ArticleType = {
   paragraphs: string[];
   sentences: string[];
   checkedSentences: number[];
+  annotations?: AnnotationType[];
 }
 
 export type AnnotationType = {
@@ -23,19 +24,28 @@ export type ColorsType = {
   existingCombinations: string[],
 };
 
+export type ArticleStateType = {
+  categoryToArticleIdListMap: Record<string, number[]>;
+  loadedArticles: ArticleType[];
+};
+
 export type UtilityType = {
   selectedSentence?: {
     articleId: number;
     category: string;
     sentenceIndex: number;
     selectedIn: 'ARTICLE_SECTION' | 'ANNOTATION_SECTION';
-  }
+  },
+  currentArticle?: {
+    articleId: number;
+    category: string;
+  },
 }
 
 export type StateType = {
   username?: string;
   colors: ColorsType;
-  articles: ArticleType[];
+  articles: ArticleStateType;
   annotations: AnnotationType[];
   utils: UtilityType;
 }

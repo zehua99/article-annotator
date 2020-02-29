@@ -4,6 +4,10 @@ export const getUtilityState = (store: StateType) => {
   return store.utils;
 }
 
+export const getCurrentArticle = (store: StateType) => {
+  return getUtilityState(store).currentArticle;
+}
+
 export const getSelectedSentence = (store: StateType) => {
   return getUtilityState(store).selectedSentence;
 }

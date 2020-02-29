@@ -1,23 +1,17 @@
-import { createStore, combineReducers } from 'redux';
+import { createStore, combineReducers, applyMiddleware } from 'redux';
+import thunk from 'redux-thunk';
 import { StateType } from './dataTypes';
 import userReducer from './reducers/userReducer';
 import annotationReducer from './reducers/annotationReducer';
 import articleReducer from './reducers/articleReducer';
 import colorReducer from './reducers/colorReducer';
 import utilityReducer from './reducers/utilityReducer';
-import data from '../data';
 
 export * from './dataTypes';
 export * from './actionTypes';
 export * from './actions';
 export * from './selectors';
 export * from './reducers';
-
-const article = {
-  ...JSON.parse(data),
-  id: 1,
-  category: 'Question 1',
-};
 
 const colors = [
   'rgb(255, 227, 134)',
@@ -40,7 +34,10 @@ const initialState: StateType = {
     annotatorToAnnotatorsMap: {},
     existingCombinations: [],
   },
-  articles: [article],
+  articles: {
+    categoryToArticleIdListMap: {},
+    loadedArticles: [],
+  },
   annotations: [],
   utils: {},
 };
@@ -53,4 +50,4 @@ const reducer = combineReducers({
   utils: utilityReducer,
 })
 
-export default createStore(reducer, initialState);
+export default createStore(reducer, initialState, applyMiddleware(thunk));

@@ -7,6 +7,7 @@ import {
   shouldSentenceScrollIntoView, CHANGE_SELECTED_TEXT, ChangeSelectedTextActionType,
 } from '../store';
 import { getColorClassName, createHighlightStyle } from '../utils';
+import socket from '../socket';
 
 type SentenceProps = {
   sentenceIndex: number;
@@ -52,11 +53,14 @@ class Sentence extends React.Component<SentenceProps & PropsFromRedux, {}> {
     if (!this.props.annotators || !this.props.username) return;
     if (!this.props.dispatch) return;
     const { articleId, category, sentenceIndex, username } = this.props;
+    let actionName = 'remove annotation';
     if (this.props.annotators.includes(this.props.username)) {
       this.props.dispatch(removeAnnotation(articleId, category, sentenceIndex, username));
     } else {
+      actionName = 'add annotation';
       this.props.dispatch(addAnnotation(articleId, category, sentenceIndex, username));
     }
+    socket.emit(actionName, { articleId, category, sentenceIndex, annotator: username });
   }
 
   handleContextMenu = (e: MouseEvent) => {

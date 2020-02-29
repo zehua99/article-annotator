@@ -7,6 +7,7 @@ import {
   getSentence, isSentenceChecked, getUsername, shouldSentenceScrollIntoView,
   ADD_ANNOTATION, REMOVE_ANNOTATION, CHANGE_SELECTED_TEXT,
 } from '../store';
+import socket from '../socket';
 
 const section = 'ANNOTATION_SECTION';
 
@@ -85,6 +86,10 @@ class SentenceCard extends React.Component<PropsType, {}> {
     } else {
       this.props.addAnnotation(articleId, category, sentenceIndex, username);
     }
+    socket.emit(
+      this.props.checked ? 'remove annotation' : 'add annotation',
+      { articleId, category, sentenceIndex, annotator: username },
+    );
   }
 
   handleContextMenu = (e: MouseEvent) => {
