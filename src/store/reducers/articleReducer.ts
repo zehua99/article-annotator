@@ -2,6 +2,7 @@ import { ArticleStateType, ArticleType } from '../dataTypes';
 import {
   ADD_ARTICLE, REMOVE_ARTICLE, UPDATE_CATEGORY_ARTICLE_LIST,
   ArticleActionType, LoadedArticleActionType, UpdateCategoryArticleListActionType,
+  UPDATE_PARAGRAPH_TO_SENTENCES, UpdateParagraphToSentencesActionType,
 } from '../actionTypes';
 
 const defaultState: ArticleStateType = {
@@ -54,6 +55,26 @@ function articleReducer(state: ArticleStateType = defaultState, action: ArticleA
           [category]: articleIds,
         },
       };
+
+    case UPDATE_PARAGRAPH_TO_SENTENCES:
+      article = (action as UpdateParagraphToSentencesActionType).article;
+      const { paragraphIndex, sentences } = action as UpdateParagraphToSentencesActionType;
+      for (let i = 0; i < state.loadedArticles.length; i++) {
+        let a = state.loadedArticles[i];
+        if (a.id === article.id && a.category === article.category) {
+          a = { ...a };
+          a.paragraphToSentences = a.paragraphToSentences || [];
+          a.paragraphToSentences[paragraphIndex] = sentences;
+          return {
+            ...state,
+            loadedArticles: [
+              ...state.loadedArticles.slice(0, i),
+              a,
+              ...state.loadedArticles.slice(i + 1),
+            ],
+          };
+        }
+      }
   }
 
   return state;

@@ -2,6 +2,8 @@ import React from 'react';
 import { Dispatch } from 'redux';
 import { connect, ConnectedProps } from 'react-redux';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
+import { GlobalHotKeys } from 'react-hotkeys';
+import { hotKeyMap, hotKeyHandlers } from '../utils';
 import { StateType, setCurrentArticle, getCurrentArticle } from '../store';
 import { Article, Annotator } from '.';
 import socket from '../socket';
@@ -55,6 +57,7 @@ class AnnotationPanel extends React.Component<PropsType> {
       <div className="annotation-panel-container">
         <Article articleId={articleId} category={category} />
         <Annotator articleId={articleId} category={category} />
+        <GlobalHotKeys keyMap={hotKeyMap} handlers={hotKeyHandlers} />
       </div>
     );
   }

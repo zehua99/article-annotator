@@ -5,7 +5,7 @@ import socket from '../socket';
 import ColorLegend from './ColorLegend';
 import Sentence from './Sentence';
 import {
-  StateType, ArticleType,
+  StateType, ArticleType, UPDATE_PARAGRAPH_TO_SENTENCES,
   getAllColors, getArticle, addAnnotation, ADD_ARTICLE,
 } from '../store';
 
@@ -28,6 +28,14 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
     dispatch({
       type: ADD_ARTICLE,
       article,
+    });
+  },
+  updateParagraphToSentencesMap: (article: ArticleType, paragraphIndex: number, sentences: number[]) => {
+    dispatch({
+      type: UPDATE_PARAGRAPH_TO_SENTENCES,
+      article,
+      paragraphIndex,
+      sentences,
     });
   },
 });
@@ -67,35 +75,39 @@ class Article extends React.Component<PropsType, {}> {
     });
   }
 
-  getParagraph(paragraph: string, key: string) {
+  getParagraph(paragraph: string, index: number) {
     if (!this.props.article) return;
+    let sentences: number[] = [];
+    const { article, articleId, category, displayOnly } = this.props;
 
-    let temp = paragraph.trim();
-    let start = -1;
-    let end = -1;
-    for (let i = 0; i < this.props.article.sentences.length; i++) {
-      if (temp.startsWith(this.props.article.sentences[i])) {
-        temp = temp.slice(this.props.article.sentences[i].length).trim();
-        if (start === -1) start = i;
-        if (temp.length === 0) {
-          end = i;
-          break;
+    if (this.props.article.paragraphToSentences && this.props.article.paragraphToSentences[index]) {
+      sentences = this.props.article.paragraphToSentences[index];
+    } else {
+      let temp = paragraph.trim();
+      let start = -1;
+      let end = -1;
+      for (let i = 0; i < this.props.article.sentences.length; i++) {
+        if (temp.startsWith(this.props.article.sentences[i])) {
+          temp = temp.slice(this.props.article.sentences[i].length).trim();
+          if (start === -1) start = i;
+          if (temp.length === 0) {
+            end = i;
+            break;
+          }
+        } else {
+          start = -1;
+          temp = paragraph.trim();
         }
-      } else {
-        start = -1;
-        temp = paragraph.trim();
       }
-    }
 
-    const { articleId, category, displayOnly } = this.props;
-
-    const sentences: number[] = [];
-    for (let i = start; i <= end; i++) {
-      sentences.push(i);
+      for (let i = start; i <= end; i++) {
+        sentences.push(i);
+      }
+      this.props.updateParagraphToSentencesMap(article, index, sentences);
     }
 
     return (
-      <p key={key}>
+      <p key={`paragraph-${index}`}>
         {sentences.map((index) => (
           <span key={`sentence-${index}`}>
             <Sentence
@@ -119,7 +131,7 @@ class Article extends React.Component<PropsType, {}> {
       return (
         <div className="article-container">
           {this.props.article.paragraphs.map((paragraph, index) => (
-            this.getParagraph(paragraph, `paragraph-${index}`)
+            this.getParagraph(paragraph, index)
           ))}
         </div>
       );
@@ -132,7 +144,7 @@ class Article extends React.Component<PropsType, {}> {
           annotators={['Quotes', 'XLNet', 'BERT Embedding', 'Ash’s Annotation']}
         />
         {this.props.article.paragraphs.map((paragraph, index) => (
-          this.getParagraph(paragraph, `paragraph-${index}`)
+          this.getParagraph(paragraph, index)
         ))}
       </div>
     );

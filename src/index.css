@@ -269,6 +269,10 @@ html, body {
   animation-duration: 1.5s;
 }
 
+.hotkey-selected-sentence {
+  outline: rgba(240, 52, 52, .8) solid 6px;
+}
+
 @keyframes selected-sentence-card-highlight {
   0% { box-shadow: 0 0 1rem rgba(3, 166, 120, 0) }
   25% { box-shadow: 0 0 1rem rgba(3, 166, 120, .8) }

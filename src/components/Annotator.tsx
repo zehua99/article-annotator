@@ -81,7 +81,7 @@ class Annotator extends React.Component<PropsType, {}> {
       const annotation = this.props.annotations[i];
       if ([destSentenceIndex, neighborSentenceIndex].includes(annotation.sentenceIndex)
         && annotation.annotator === this.props.username) {
-        newRank = (newRank || 0) + (annotation.rank || 0) / 2;
+        newRank = (newRank || 0) + (annotation.rank || 1) / 2;
         count++;
       }
     }
@@ -91,7 +91,6 @@ class Annotator extends React.Component<PropsType, {}> {
       newRank = 2 * newRank + 1024;
     } else if (destIndex === this.props.annotatedSentences.length - 1) {
       if (count < 1) return;
-      newRank = 2 * newRank - 1024;
     } else if (count < 2) return;
 
     const ann = {
@@ -111,7 +110,7 @@ class Annotator extends React.Component<PropsType, {}> {
 
         <DragDropContext onDragEnd={this.onDragEnd.bind(this)}>
           <Droppable droppableId="annotation-list">
-            {(provided, snapshot) => (
+            {(provided) => (
               <div
                 {...provided.droppableProps}
                 ref={provided.innerRef}>

@@ -9,6 +9,7 @@ export type ArticleType = {
   sentences: string[];
   checkedSentences: number[];
   annotations?: AnnotationType[];
+  paragraphToSentences?: number[][];
 }
 
 export type AnnotationType = {
@@ -35,7 +36,7 @@ export type UtilityType = {
     articleId: number;
     category: string;
     sentenceIndex: number;
-    selectedIn: 'ARTICLE_SECTION' | 'ANNOTATION_SECTION';
+    selectedIn: 'ARTICLE_SECTION' | 'ANNOTATION_SECTION' | 'HOT_KEY' | 'DESELECT';
   },
   currentArticle?: {
     articleId: number;

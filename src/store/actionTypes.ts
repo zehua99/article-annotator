@@ -3,6 +3,7 @@ import { ArticleType, AnnotationType } from './dataTypes';
 export const ADD_ARTICLE = 'ADD_ARTICLE';
 export const REMOVE_ARTICLE = 'REMOVE_ARTICLE';
 export const UPDATE_CATEGORY_ARTICLE_LIST = 'UPDATE_CATEGORY_ARTICLE_LIST';
+export const UPDATE_PARAGRAPH_TO_SENTENCES = 'UPDATE_PARAGRAPH_TO_SENTENCES';
 
 export const ADD_ANNOTATION = 'ADD_ANNOTATION';
 export const REMOVE_ANNOTATION = 'REMOVE_ANNOTATION';
@@ -43,8 +44,17 @@ export type UpdateCategoryArticleListActionType = {
   articleIds: number[]
 }
 
+export type UpdateParagraphToSentencesActionType = {
+  type: typeof UPDATE_PARAGRAPH_TO_SENTENCES
+  article: ArticleType,
+  paragraphIndex: number,
+  sentences: number[],
+}
+
 export type LoadedArticleActionType = AddArticleActionType | RemoveArticleActionType;
-export type ArticleActionType = LoadedArticleActionType | UpdateCategoryArticleListActionType;
+export type ArticleActionType = LoadedArticleActionType
+  | UpdateCategoryArticleListActionType
+  | UpdateParagraphToSentencesActionType;
 
 /**
  * Annotation
@@ -87,7 +97,7 @@ export type ChangeSelectedTextActionType = {
     articleId: number
     category: string
     sentenceIndex: number
-    selectedIn: 'ARTICLE_SECTION' | 'ANNOTATION_SECTION'
+    selectedIn: 'ARTICLE_SECTION' | 'ANNOTATION_SECTION' | 'HOT_KEY' | 'DESELECT'
   }
 }
 

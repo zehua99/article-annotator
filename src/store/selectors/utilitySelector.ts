@@ -17,11 +17,12 @@ export const shouldSentenceScrollIntoView = (
   articleId: number,
   category: string,
   sentenceIndex: number,
-  sentenceIn: 'ARTICLE_SECTION' | 'ANNOTATION_SECTION'
+  sentenceIn: 'ARTICLE_SECTION' | 'ANNOTATION_SECTION' | 'HOT_KEY' | 'DESELECT'
 ) => {
   const utils = getUtilityState(store);
   if (!utils.selectedSentence) return false;
   const { selectedSentence } = utils;
+  if (selectedSentence.selectedIn === 'DESELECT') return false;
   return selectedSentence.articleId === articleId
     && selectedSentence.sentenceIndex === sentenceIndex
     && selectedSentence.category === category

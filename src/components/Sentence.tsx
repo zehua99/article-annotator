@@ -2,7 +2,7 @@ import React, { MouseEvent } from 'react';
 import { connect, ConnectedProps } from 'react-redux';
 import scrollIntoView from 'scroll-into-view-if-needed';
 import {
-  StateType,
+  StateType, getSelectedSentence,
   getSentence, getAnnotators, getUsername, addAnnotation, removeAnnotation,
   shouldSentenceScrollIntoView, CHANGE_SELECTED_TEXT, ChangeSelectedTextActionType,
 } from '../store';
@@ -22,6 +22,7 @@ const mapStateToProps = (state: StateType, props: SentenceProps) => ({
   sentence: getSentence(props.articleId, props.category, props.sentenceIndex)(state),
   annotators: getAnnotators(props.articleId, props.category, props.sentenceIndex)(state),
   username: getUsername(state),
+  selectedSentence: getSelectedSentence(state),
   shouldScrollIntoView: props.plainText ? null : shouldSentenceScrollIntoView(
     state,
     props.articleId,
@@ -41,14 +42,16 @@ class Sentence extends React.Component<PropsType> {
   componentDidUpdate(prev: PropsType) {
     if (prev.shouldScrollIntoView === this.props.shouldScrollIntoView) return;
     if (this.props.shouldScrollIntoView) {
-      this.props.dispatch({
-        type: CHANGE_SELECTED_TEXT,
-        selectedText: { articleId: -1, category: '', sentenceIndex: -1, selectedIn: section },
-      } as ChangeSelectedTextActionType);
       if (!this.ref || !this.ref.current) return;
       scrollIntoView(this.ref.current, { behavior: 'smooth' });
-      this.ref.current.classList.add('selected-sentence');
-      setTimeout(() => this.ref.current?.classList.remove('selected-sentence'), 1500);
+      const isHotKeyTriggered = this.props.selectedSentence?.selectedIn === 'HOT_KEY';
+      const className = isHotKeyTriggered ? 'hotkey-selected-sentence' : 'selected-sentence';
+      this.ref.current.classList.add(className);
+      if (!isHotKeyTriggered) {
+        setTimeout(() => this.ref.current?.classList.remove('selected-sentence'), 1500);
+      }
+    } else {
+      this.ref.current?.classList.remove('hotkey-selected-sentence');
     }
   }
 
