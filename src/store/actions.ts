@@ -37,7 +37,8 @@ export function addAnnotation(
   articleId: number,
   category: string,
   sentenceIndex: number,
-  annotator: string): AddAnnotationActionType {
+  annotator: string,
+  rank: number = 0): AddAnnotationActionType {
   return {
     type: ADD_ANNOTATION,
     annotation: {
@@ -45,6 +46,7 @@ export function addAnnotation(
       category,
       sentenceIndex,
       annotator,
+      rank,
     }
   }
 }

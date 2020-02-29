@@ -6,6 +6,7 @@ export const UPDATE_CATEGORY_ARTICLE_LIST = 'UPDATE_CATEGORY_ARTICLE_LIST';
 
 export const ADD_ANNOTATION = 'ADD_ANNOTATION';
 export const REMOVE_ANNOTATION = 'REMOVE_ANNOTATION';
+export const UPDATE_ANNOTATION_RANK = 'UPDATE_ANNOTATION_RANK';
 
 export const CHANGE_COLOR = 'CHANGE_COLOR';
 export const ADD_COLORS_TO_DOCUMENT = 'ADD_COLORS_TO_DOCUMENT';
@@ -58,7 +59,14 @@ export type RemoveAnnotationActionType = {
   annotation: AnnotationType
 }
 
-export type AnnotationActionType = AddAnnotationActionType | RemoveAnnotationActionType;
+export type UpdateAnnotationRankActionType = {
+  type: typeof UPDATE_ANNOTATION_RANK
+  annotation: AnnotationType
+}
+
+export type AnnotationActionType = AddAnnotationActionType
+  | RemoveAnnotationActionType
+  | UpdateAnnotationRankActionType;
 
 /**
  * Color

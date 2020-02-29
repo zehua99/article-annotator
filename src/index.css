@@ -76,7 +76,7 @@ html, body {
 
 .annotator-container {
   background-color: rgba(245, 245, 220, .5);
-  padding: 2rem 1rem;
+  padding: 2rem 1rem 4rem;
   overflow-y: scroll;
   scroll-behavior: smooth;
 }
@@ -103,6 +103,18 @@ html, body {
   border-radius: .5rem;
   transition: all .25s;
   overflow: hidden;
+  position: relative;
+}
+
+.sentence-card-background {
+  background-image: url(/paper.jpg);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  border-radius: .5rem;
 }
 
 .sentence-card p {
@@ -115,9 +127,10 @@ html, body {
 
 .sentence-card .side {
   display: flex;
-  align-items: flex-end;
+  flex-direction: column;
+  align-items: center;
   background-color: rgba(0, 0, 0, .1);
-  justify-content: center;
+  justify-content: space-between;
   color: #fff;
   transition: all .25s;
 }
@@ -143,19 +156,22 @@ html, body {
 }
 
 .last-next-buttons {
-  position: relative;
   display: flex;
-  margin-top: 1rem;
-  margin-bottom: 4rem;
+  position: fixed;
+  width: 50vw;
+  bottom: 0;
+  right: 0;
+  justify-content: space-between;
+  background: rgb(243, 230, 185);
 }
 
 .last-article-button, .next-article-button {
   cursor: pointer;
-  background-color: rgba(233, 212, 96, 1);
+  background-color: rgb(244, 208, 63);
   font-size: 1rem;
-  position: absolute;
   font-family: Helvetica, Arial, Sans-Serif;
   transition: all .25s;
+  padding: .5rem 1rem;
 }
 
 .last-article-button:hover, .next-article-button:hover {
@@ -163,17 +179,13 @@ html, body {
 }
 
 .last-article-button {
-  padding: .5rem 1rem .5rem 2rem;
-  border-bottom-right-radius: .5rem;
-  border-top-right-radius: .5rem;
-  left: -1rem;
+  border-top-right-radius: 2rem;
+  border-bottom-right-radius: 2rem;
 }
 
 .next-article-button {
-  padding: .5rem 2rem .5rem 1rem;
-  border-bottom-left-radius: .5rem;
-  border-top-left-radius: .5rem;
-  right: -1rem;
+  border-top-left-radius: 2rem;
+  border-bottom-left-radius: 2rem;
 }
 
 .article-card-container {

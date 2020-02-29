@@ -16,6 +16,7 @@ export type AnnotationType = {
   category: string;
   sentenceIndex: number;
   annotator: string;
+  rank?: number;
 }
 
 export type ColorsType = {

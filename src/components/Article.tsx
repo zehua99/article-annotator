@@ -21,8 +21,8 @@ const mapStateToProps = (state: StateType, ownProps: ArticleProps) => ({
 });
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
-  addAnnotation: (article: ArticleType, sentenceIndex: number, annotator: string) => {
-    dispatch(addAnnotation(article.id, article.category, sentenceIndex, annotator));
+  addAnnotation: (article: ArticleType, sentenceIndex: number, annotator: string, rank?: number) => {
+    dispatch(addAnnotation(article.id, article.category, sentenceIndex, annotator, rank));
   },
   addArticle: (article: ArticleType) => {
     dispatch({
@@ -55,7 +55,7 @@ class Article extends React.Component<PropsType, {}> {
     }, (article: ArticleType) => {
       this.props.addArticle(article);
       for (const annotation of article.annotations || []) {
-        this.props.addAnnotation(article, annotation.sentenceIndex, annotation.annotator);
+        this.props.addAnnotation(article, annotation.sentenceIndex, annotation.annotator, annotation.rank);
       }
     });
   }

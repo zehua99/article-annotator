@@ -1,6 +1,6 @@
 import socketIOClient from 'socket.io-client';
 import store, {
-  AnnotationType, UPDATE_CATEGORY_ARTICLE_LIST,
+  AnnotationType, UPDATE_CATEGORY_ARTICLE_LIST, UPDATE_ANNOTATION_RANK,
   addAnnotation, removeAnnotation,
 } from './store';
 
@@ -22,6 +22,13 @@ socket.on('add annotation', (annotation: AnnotationType) => {
 socket.on('remove annotation', (annotation: AnnotationType) => {
   const { articleId, category, annotator, sentenceIndex } = annotation;
   store.dispatch(removeAnnotation(articleId, category, sentenceIndex, annotator));
+});
+
+socket.on('update annotation rank', (annotation: AnnotationType) => {
+  store.dispatch({
+    type: UPDATE_ANNOTATION_RANK,
+    annotation,
+  });
 });
 
 export default socket;

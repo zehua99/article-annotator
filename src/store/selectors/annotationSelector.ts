@@ -7,13 +7,17 @@ export const getAnnotationState = (store: StateType) => {
   return store.annotations;
 }
 
-export const getAnnotations = (articleId: number, category: string, sentenceIndex: number) => createSelector(
+export const getArticleAnnotations = (articleId: number, category: string) => createSelector(
   getAnnotationState,
   annotations => annotations.filter(annotation => (
-    annotation.category === category
-    && annotation.sentenceIndex === sentenceIndex
-    && annotation.articleId === articleId
+    annotation.articleId === articleId
+    && annotation.category === category
   )),
+);
+
+export const getAnnotations = (articleId: number, category: string, sentenceIndex: number) => createSelector(
+  getArticleAnnotations(articleId, category),
+  annotations => annotations.filter(annotation => annotation.sentenceIndex === sentenceIndex),
 );
 
 export const isSentenceChecked = (articleId: number, category: string, sentenceIndex: number) => createSelector(
@@ -30,9 +34,19 @@ export const isSentenceChecked = (articleId: number, category: string, sentenceI
 
 export const getAnnotatedSentences = (articleId: number, category: string) => createSelector(
   getAnnotationState,
-  annotations => {
-    const anns = annotations.filter(a => a.articleId === articleId && a.category === category);
-    return _.uniq(anns.map(annotation => annotation.sentenceIndex)).sort((a, b) => a - b);
+  getUsername,
+  (annotations, username) => {
+    const anns = annotations
+      .filter(a => a.articleId === articleId && a.category === category)
+      .sort((a, b) => {
+        if ((a.annotator === username) !== (b.annotator === username))
+          return a.annotator === username ? -1 : 1;
+        if (a.rank !== b.rank)
+          return (b.rank || 0) - (a.rank || 0);
+        return a.sentenceIndex - b.sentenceIndex;
+      })
+      .map(a => a.sentenceIndex);
+    return _.uniq(anns);
   },
 );
 

@@ -61,6 +61,7 @@ type SentenceCardProps = {
   articleId: number;
   category: string;
   sentenceIndex: number;
+  index?: number;
 }
 
 type PropsType = SentenceCardProps & PropsFromRedux;
@@ -68,9 +69,9 @@ type PropsType = SentenceCardProps & PropsFromRedux;
 class SentenceCard extends React.Component<PropsType, {}> {
   divRef = React.createRef<HTMLDivElement>();
 
-  componentDidUpdate() {
+  componentDidUpdate(prev: PropsType) {
+    if (prev.shouldScrollIntoView === this.props.shouldScrollIntoView) return;
     if (this.props.shouldScrollIntoView) {
-      this.props.changeSelectedText(-1, '', -1);
       if (!this.divRef || !this.divRef.current) return;
       scrollIntoView(this.divRef.current, { behavior: 'smooth' });
       this.divRef.current.classList.add('selected-sentence-card');
@@ -107,7 +108,8 @@ class SentenceCard extends React.Component<PropsType, {}> {
         onContextMenu={this.handleContextMenu}
         className={`sentence-card ${this.props.checked ? 'checked' : ''}`}>
         <p>{this.props.sentence}</p>
-        <div className="side"></div>
+        <div className="side"><span>{this.props.index}</span></div>
+        <div className="sentence-card-background" />
       </div>
     )
   }

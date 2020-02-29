@@ -33,11 +33,13 @@ const mapStateToProps = (state: StateType, props: SentenceProps) => ({
 
 const connector = connect(mapStateToProps);
 type PropsFromRedux = ConnectedProps<typeof connector>;
+type PropsType = SentenceProps & PropsFromRedux
 
-class Sentence extends React.Component<SentenceProps & PropsFromRedux, {}> {
+class Sentence extends React.Component<PropsType> {
   ref = React.createRef<HTMLSpanElement>();
 
-  componentDidUpdate() {
+  componentDidUpdate(prev: PropsType) {
+    if (prev.shouldScrollIntoView === this.props.shouldScrollIntoView) return;
     if (this.props.shouldScrollIntoView) {
       this.props.dispatch({
         type: CHANGE_SELECTED_TEXT,
@@ -61,7 +63,7 @@ class Sentence extends React.Component<SentenceProps & PropsFromRedux, {}> {
       actionName = 'add annotation';
       this.props.dispatch(addAnnotation(articleId, category, sentenceIndex, username));
     }
-    socket.emit(actionName, { articleId, category, sentenceIndex, annotator: username });
+    socket.emit(actionName, { articleId, category, sentenceIndex, annotator: username, rank: 0 });
   }
 
   handleContextMenu = (e: MouseEvent) => {
