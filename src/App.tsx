@@ -19,7 +19,7 @@ class App extends React.Component<PropsFromRedux> {
     }
 
     return (
-      <Router>
+      <Router basename='/article-annotator'>
         <Switch>
           <Route path="/:category/:articleId">
             <AnnotationPanel />

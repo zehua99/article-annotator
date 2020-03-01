@@ -45,13 +45,10 @@ class Sentence extends React.Component<PropsType> {
       if (!this.ref || !this.ref.current) return;
       scrollIntoView(this.ref.current, { behavior: 'smooth' });
       const isHotKeyTriggered = this.props.selectedSentence?.selectedIn === 'HOT_KEY';
-      const className = isHotKeyTriggered ? 'hotkey-selected-sentence' : 'selected-sentence';
-      this.ref.current.classList.add(className);
       if (!isHotKeyTriggered) {
+        this.ref.current.classList.add('selected-sentence');
         setTimeout(() => this.ref.current?.classList.remove('selected-sentence'), 1500);
       }
-    } else {
-      this.ref.current?.classList.remove('hotkey-selected-sentence');
     }
   }
 
@@ -90,6 +87,15 @@ class Sentence extends React.Component<PropsType> {
     }
   }
 
+  getClassName() {
+    const classNames = [getColorClassName(this.props.annotators || [])];
+    if (this.props.shouldScrollIntoView
+      && this.props.selectedSentence?.selectedIn === 'HOT_KEY') {
+      classNames.push('hotkey-selected-sentence');
+    }
+    return classNames.join(' ');
+  }
+
   render() {
     if (this.props.plainText) {
       return (
@@ -105,7 +111,7 @@ class Sentence extends React.Component<PropsType> {
         ref={this.ref}
         onClick={this.handleClick}
         onContextMenu={this.handleContextMenu}
-        className={getColorClassName(this.props.annotators || [])}>
+        className={this.getClassName()}>
         {this.props.sentence}
         {createHighlightStyle(this.props.annotators || [])}
       </span>

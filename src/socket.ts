@@ -4,7 +4,7 @@ import store, {
   addAnnotation, removeAnnotation,
 } from './store';
 
-const socket = socketIOClient(`http://0.0.0.0:5000/`);
+const socket = socketIOClient(`https://backend.annotator.zehua.li/`);
 
 socket.emit('refresh article list', { category: 'Question 1' }, (articleIds: number[]) => {
   store.dispatch({

@@ -83,16 +83,16 @@ const goToArticleWithOffset = (offset: number) => {
   index = Math.min(idList.length - 1, index);
   index = Math.max(0, index);
   store.dispatch(setCurrentArticle(idList[index], article.category));
-  window.history.pushState(null, '', `/${article.category}/${idList[index]}`);
+  window.history.pushState(null, '', `/article-annotator/${article.category}/${idList[index]}`);
 }
 
 export const hotKeyMap = {
-  ENTER: ['enter'],
-  MOVE_UP: ['w'],
-  MOVE_DOWN: ['s'],
-  DESELECT: ['q'],
-  LAST_ARTICLE: ['['],
-  NEXT_ARTICLE: [']'],
+  ENTER: ['enter', 'k'],
+  MOVE_UP: ['w', 'h'],
+  MOVE_DOWN: ['s', 'j'],
+  DESELECT: ['q', 'l'],
+  LAST_ARTICLE: ['[', 'y'],
+  NEXT_ARTICLE: [']', 'u'],
 };
 
 export const hotKeyHandlers = {

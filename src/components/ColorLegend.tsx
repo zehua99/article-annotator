@@ -6,11 +6,14 @@ type ColorLegendProps = {
   articleId: string;
   annotators: string[];
 }
+type PropsType = ColorLegendProps & RouteComponentProps;
 
-class ColorLegend extends React.Component<ColorLegendProps & RouteComponentProps, {}> {
-  componentDidMount() {
-    for (const annotator of this.props.annotators) {
-      createHighlightStyle(annotator);
+class ColorLegend extends React.Component<PropsType> {
+  componentDidUpdate(prev: PropsType) {
+    if (prev.annotators !== this.props.annotators) {
+      for (const annotator of this.props.annotators) {
+        createHighlightStyle(annotator);
+      }
     }
   }
 
