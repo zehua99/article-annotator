@@ -4,7 +4,7 @@ import { connect, ConnectedProps } from 'react-redux';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { DragDropContext, Droppable, Draggable, DropResult } from 'react-beautiful-dnd';
 import {
-  StateType, AnnotationType,
+  StateType, AnnotationType, addAnnotation,
   getArticleAnnotations, getUsername, UPDATE_ANNOTATION_RANK,
   getAnnotatedSentences, getLastArticleId, getNextArticleId,
 } from '../store';
@@ -31,7 +31,10 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
       type: UPDATE_ANNOTATION_RANK,
       annotation,
     });
-  }
+  },
+  addAnnotation: (articleId: number, category: string, sentenceIndex: number, username: string) => {
+    dispatch(addAnnotation(articleId, category, sentenceIndex, username));
+  },
 });
 
 const connector = connect(mapStateToProps, mapDispatchToProps);
@@ -55,7 +58,6 @@ class Annotator extends React.Component<PropsType, {}> {
     if (!result.destination) return;
     const sentenceIndex = this.props.annotatedSentences[result.source.index];
     const destSentenceIndex = this.props.annotatedSentences[result.destination.index];
-    if (sentenceIndex === destSentenceIndex) return;
 
     let annotationIndex = null;
     for (let i = 0; i < this.props.annotations.length; i++) {
@@ -66,7 +68,17 @@ class Annotator extends React.Component<PropsType, {}> {
         break;
       }
     }
-    if (annotationIndex === null) return;
+    if (annotationIndex === null) {
+      if (!this.props.username) return;
+      this.props.addAnnotation(
+        this.props.articleId,
+        this.props.category,
+        sentenceIndex,
+        this.props.username,
+      );
+    }
+
+    if (sentenceIndex === destSentenceIndex) return;
 
     let newRank = null;
     const destIndex = result.destination.index;
@@ -85,6 +97,7 @@ class Annotator extends React.Component<PropsType, {}> {
         count++;
       }
     }
+
     if (newRank === null) return;
     if (destIndex === 0) {
       if (count < 1) return;
@@ -94,7 +107,10 @@ class Annotator extends React.Component<PropsType, {}> {
     } else if (count < 2) return;
 
     const ann = {
-      ...this.props.annotations[annotationIndex],
+      articleId: this.props.articleId,
+      category: this.props.category,
+      sentenceIndex: sentenceIndex,
+      annotator: this.props.username || '',
       rank: newRank,
     };
 

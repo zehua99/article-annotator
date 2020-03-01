@@ -131,7 +131,7 @@ html, body {
   align-items: center;
   background-color: rgba(0, 0, 0, .1);
   justify-content: space-between;
-  color: #fff;
+  color: #333;
   transition: all .25s;
 }
 
@@ -140,6 +140,7 @@ html, body {
 }
 
 .sentence-card.checked .side {
+  color: #fff;
   background-color: rgba(3, 166, 120, .8);
 }
 
@@ -242,6 +243,37 @@ html, body {
   padding: 1rem;
   height: calc(100vh - 2rem);
   overflow-y: scroll;
+}
+
+.username-container {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.username-input {
+  width: 15rem;
+  height: 1.85rem;
+  font-size: 1.2rem;
+  margin-right: .5rem;
+  padding: 0 .5rem;
+  border-radius: 1rem;
+  outline: 0;
+  color: #333;
+  background-color: #fff;
+  border: none;
+}
+
+.username-button {
+  background-color: rgb(250, 216, 89);
+  font-size: 1rem;
+  padding: .1rem 1rem;
+  border: solid 2px rgb(240, 240, 214);
+  border-radius: 2rem;
+  color: #333;
+  cursor: pointer;
 }
 
 @keyframes shakey-sentence-motion {

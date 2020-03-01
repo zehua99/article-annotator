@@ -15,6 +15,18 @@ export const getArticleAnnotations = (articleId: number, category: string) => cr
   )),
 );
 
+export const getArticleAnnotators = (articleId: number, category: string) => createSelector(
+  getArticleAnnotations(articleId, category),
+  getUsername,
+  (annotations, username) => {
+    const annotators = annotations
+      .map(a => a.annotator)
+      .filter(a => a !== username);
+    annotators.push(username || '');
+    return _.uniq(annotators);
+  },
+)
+
 export const getAnnotations = (articleId: number, category: string, sentenceIndex: number) => createSelector(
   getArticleAnnotations(articleId, category),
   annotations => annotations.filter(annotation => annotation.sentenceIndex === sentenceIndex),

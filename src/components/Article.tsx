@@ -6,7 +6,7 @@ import ColorLegend from './ColorLegend';
 import Sentence from './Sentence';
 import {
   StateType, ArticleType, UPDATE_PARAGRAPH_TO_SENTENCES,
-  getAllColors, getArticle, addAnnotation, ADD_ARTICLE,
+  getArticle, addAnnotation, ADD_ARTICLE, getArticleAnnotators,
 } from '../store';
 
 type ArticleProps = {
@@ -17,7 +17,7 @@ type ArticleProps = {
 
 const mapStateToProps = (state: StateType, ownProps: ArticleProps) => ({
   article: getArticle(ownProps.articleId, ownProps.category)(state),
-  colors: getAllColors(state),
+  annotators: getArticleAnnotators(ownProps.articleId, ownProps.category)(state),
 });
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
@@ -141,7 +141,7 @@ class Article extends React.Component<PropsType, {}> {
       <div className="article-container" onContextMenu={this.blockContextMenu}>
         <ColorLegend 
           articleId="1"
-          annotators={['Quotes', 'XLNet', 'BERT Embedding', 'Ash’s Annotation']}
+          annotators={this.props.annotators}
         />
         {this.props.article.paragraphs.map((paragraph, index) => (
           this.getParagraph(paragraph, index)

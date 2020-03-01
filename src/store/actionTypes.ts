@@ -81,12 +81,18 @@ export type AnnotationActionType = AddAnnotationActionType
 /**
  * Color
  */
+export type ChangeColorActionType = {
+  type: typeof CHANGE_COLOR
+  username: string
+  color: string
+}
+
 export type AddColorsToDocumentActionType = {
   type: typeof ADD_COLORS_TO_DOCUMENT
   className: string
 }
 
-export type ColorActionType = AddColorsToDocumentActionType;
+export type ColorActionType = ChangeColorActionType | AddColorsToDocumentActionType;
 
 /**
  * Utility

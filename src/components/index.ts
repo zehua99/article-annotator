@@ -7,6 +7,7 @@ import ColorLegend from './ColorLegend';
 import QuestionCard from './QuestionCard';
 import Sentence from './Sentence';
 import SentenceCard from './SentenceCard';
+import SetUsername from './SetUsername';
 
 export {
   AnnotationPanel,
@@ -18,4 +19,5 @@ export {
   QuestionCard,
   Sentence,
   SentenceCard,
+  SetUsername,
 };

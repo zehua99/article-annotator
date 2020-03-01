@@ -4,13 +4,14 @@ import { connect, ConnectedProps } from 'react-redux';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { GlobalHotKeys } from 'react-hotkeys';
 import { hotKeyMap, hotKeyHandlers } from '../utils';
-import { StateType, setCurrentArticle, getCurrentArticle } from '../store';
+import { StateType, setCurrentArticle, getCurrentArticle, isUserLoggedIn } from '../store';
 import { Article, Annotator } from '.';
 import socket from '../socket';
 
 const mapStateToProps = (state: StateType) => ({
   articleId: getCurrentArticle(state)?.articleId,
   category: getCurrentArticle(state)?.category,
+  isUserLoggedIn: isUserLoggedIn(state),
 });
 const mapDispatchToProps = (dispatch: Dispatch) => ({
   setCurrentArticle: (articleId: number, category: string) => {
