@@ -1,14 +1,17 @@
 import React from 'react';
 import { connect, ConnectedProps } from 'react-redux';
+import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { StateType, getArticleIdList } from '../store';
+import { fetchArticleList } from '../socket';
 import ArticleCard from './ArticleCard';
 
 type ArticleCardPanelProps = {
   category: string,
 }
 
-const mapStateToProps = (state: StateType, props: ArticleCardPanelProps) => ({
-  articleIds: getArticleIdList(props.category)(state),
+const mapStateToProps = (state: StateType, props: ArticleCardPanelProps & RouteComponentProps) => ({
+  articleIds: getArticleIdList((props.match.params as any).category)(state),
+  category: (props.match.params as any).category,
 });
 
 const connector = connect(mapStateToProps);
@@ -25,6 +28,10 @@ class ArticleCardPanel extends React.Component<PropsType, ArticleCardPanelState>
     this.state = {
       maxArticleCount: 20,
     };
+  }
+
+  componentDidMount() {
+    fetchArticleList(this.props.category);
   }
 
   handleScroll = (event: React.UIEvent<HTMLDivElement>) => {
@@ -55,4 +62,4 @@ class ArticleCardPanel extends React.Component<PropsType, ArticleCardPanelState>
   }
 }
 
-export default connector(ArticleCardPanel);
+export default withRouter(connector(ArticleCardPanel));

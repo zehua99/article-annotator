@@ -129,7 +129,7 @@ class Article extends React.Component<PropsType, {}> {
     if (!this.props.article) return <div className="article-container" />;
     if (this.props.displayOnly) {
       return (
-        <div className="article-container">
+        <div className="article-container not-so-smooth">
           {this.props.article.paragraphs.map((paragraph, index) => (
             this.getParagraph(paragraph, index)
           ))}

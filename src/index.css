@@ -21,13 +21,17 @@ html, body {
   background-color: #fff;
 }
 
+.not-so-smooth {
+  scroll-behavior: unset;
+}
+
 .article-container>* {
   padding-left: 2rem;
   padding-right: 2rem;
 }
 
 .article-container span {
-  user-select: none;
+  /* user-select: none; */
 }
 
 .article-container>p>span>span {

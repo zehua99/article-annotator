@@ -8,7 +8,7 @@ import {
   getArticleAnnotations, getUsername, UPDATE_ANNOTATION_RANK,
   getAnnotatedSentences, getLastArticleId, getNextArticleId,
 } from '../store';
-import socket from '../socket';
+import socket, { fetchArticleList } from '../socket';
 import QuestionCard from './QuestionCard';
 import SentenceCard from './SentenceCard';
 
@@ -42,6 +42,12 @@ type PropsFromRedux = ConnectedProps<typeof connector>;
 type PropsType = AnnotatorProps & PropsFromRedux & RouteComponentProps;
 
 class Annotator extends React.Component<PropsType, {}> {
+  componentDidMount() {
+    if (this.props.lastArticleId < 0 && this.props.nextArticleId < 0) {
+      fetchArticleList(this.props.category);
+    }
+  }
+
   goToLastArticle = () => {
     const { category, history, lastArticleId } = this.props;
     if (lastArticleId < 0) return;

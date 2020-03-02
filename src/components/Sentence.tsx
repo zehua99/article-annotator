@@ -39,6 +39,22 @@ type PropsType = SentenceProps & PropsFromRedux
 class Sentence extends React.Component<PropsType> {
   ref = React.createRef<HTMLSpanElement>();
 
+  componentDidMount() {
+    setTimeout(() => {
+      if (this.props.plainText && this.props.annotators.length > 0
+        && this.ref && this.ref.current) {
+        if (this.ref.current.parentElement === null) return;
+        let parent: HTMLElement = this.ref.current.parentElement;
+        while (!parent.classList.contains('article-container')) {
+          if (parent.parentElement === null) return;
+          parent = parent.parentElement;
+        }
+
+        parent.scrollTo(0, this.ref.current.offsetTop - 100);
+      }
+    }, 0);
+  }
+
   componentDidUpdate(prev: PropsType) {
     if (prev.shouldScrollIntoView === this.props.shouldScrollIntoView) return;
     if (this.props.shouldScrollIntoView) {
@@ -99,7 +115,9 @@ class Sentence extends React.Component<PropsType> {
   render() {
     if (this.props.plainText) {
       return (
-        <span className={getColorClassName(this.props.annotators || [])}>
+        <span
+          ref={this.ref}
+          className={getColorClassName(this.props.annotators || [])}>
           {this.props.sentence}
           {createHighlightStyle(this.props.annotators || [])}
         </span>

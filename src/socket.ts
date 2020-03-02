@@ -6,13 +6,15 @@ import store, {
 
 const socket = socketIOClient(`https://backend.annotator.zehua.li/`);
 
-socket.emit('refresh article list', { category: 'Question 1' }, (articleIds: number[]) => {
-  store.dispatch({
-    type: UPDATE_CATEGORY_ARTICLE_LIST,
-    category: 'Question 1',
-    articleIds,
+export const fetchArticleList = (category: string) => {
+  socket.emit('refresh article list', { category }, (articleIds: number[]) => {
+    store.dispatch({
+      type: UPDATE_CATEGORY_ARTICLE_LIST,
+      category,
+      articleIds,
+    });
   });
-});
+};
 
 socket.on('add annotation', (annotation: AnnotationType) => {
   const { articleId, category, annotator, sentenceIndex } = annotation;
