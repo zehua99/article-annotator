@@ -16,12 +16,12 @@ type ArticleCardState = {
 class ArticleCard extends React.Component<ArticleCardProps, ArticleCardState> {
   constructor(props: ArticleCardProps) {
     super(props);
-    this.state = { hasRenderedInFull: false };
+    this.state = { hasRenderedInFull: !this.props.shouldNotRenderInFull };
   }
 
   componentDidUpdate(props: ArticleCardProps) {
     if (this.state.hasRenderedInFull) return;
-    if (!this.props.shouldNotRenderInFull) {
+    if (!props.shouldNotRenderInFull) {
       this.setState({ hasRenderedInFull: true });
     }
   }

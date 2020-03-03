@@ -42,9 +42,20 @@ type PropsFromRedux = ConnectedProps<typeof connector>;
 type PropsType = AnnotatorProps & PropsFromRedux & RouteComponentProps;
 
 class Annotator extends React.Component<PropsType, {}> {
+  ref = React.createRef<HTMLDivElement>();
+
   componentDidMount() {
     if (this.props.lastArticleId < 0 && this.props.nextArticleId < 0) {
       fetchArticleList(this.props.category);
+    }
+  }
+
+  componentDidUpdate(prevProps: PropsType) {
+    if (prevProps.articleId !== this.props.articleId
+      || prevProps.category !== this.props.category) {
+      if (this.ref && this.ref.current) {
+        this.ref.current.scrollTo(0, 0);
+      }
     }
   }
 
@@ -126,7 +137,7 @@ class Annotator extends React.Component<PropsType, {}> {
 
   render() {
     return (
-      <div className="annotator-container">
+      <div className="annotator-container" ref={this.ref}>
         <QuestionCard articleId={this.props.articleId} category={this.props.category} />
         <h3>Select sentences that are relative to the question.</h3>
 

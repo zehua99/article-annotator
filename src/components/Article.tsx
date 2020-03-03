@@ -45,33 +45,41 @@ type PropsFromRedux = ConnectedProps<typeof connector>;
 type PropsType = ArticleProps & PropsFromRedux;
 
 class Article extends React.Component<PropsType, {}> {
+  ref = React.createRef<HTMLDivElement>();
+
   componentDidMount() {
     this.getArticle();
   }
 
-  componentDidUpdate(prevProps: PropsType) {
+  async componentDidUpdate(prevProps: PropsType) {
     if (prevProps.articleId !== this.props.articleId ||
       prevProps.category !== this.props.category) {
-      this.getArticle();
-    }
-  }
-
-  getArticle = () => {
-    socket.emit('get article', {
-      articleId: this.props.articleId,
-      category: this.props.category,
-    }, (article: ArticleType) => {
-      this.props.addArticle(article);
-      for (const annotation of article.annotations || []) {
-        this.props.addAnnotation(article, annotation.sentenceIndex, annotation.annotator, annotation.rank);
+      await this.getArticle();
+      if (this.ref && this.ref.current) {
+        this.ref.current.scrollTo(0, 0);
       }
-    });
+    }
   }
 
   componentWillUnmount() {
     socket.emit('leave article', {
       articleId: this.props.articleId,
       category: this.props.category,
+    });
+  }
+
+  getArticle = async () => {
+    return new Promise((resolve) => {
+      socket.emit('get article', {
+        articleId: this.props.articleId,
+        category: this.props.category,
+      }, (article: ArticleType) => {
+        this.props.addArticle(article);
+        for (const annotation of article.annotations || []) {
+          this.props.addAnnotation(article, annotation.sentenceIndex, annotation.annotator, annotation.rank);
+        }
+        resolve();
+      });
     });
   }
 
@@ -138,7 +146,7 @@ class Article extends React.Component<PropsType, {}> {
     }
 
     return (
-      <div className="article-container" onContextMenu={this.blockContextMenu}>
+      <div className="article-container" onContextMenu={this.blockContextMenu} ref={this.ref}>
         <ColorLegend 
           articleId="1"
           annotators={this.props.annotators}
