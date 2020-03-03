@@ -5,18 +5,48 @@ import Article from './Article';
 type ArticleCardProps = RouteComponentProps & {
   articleId: number,
   category: string,
+  style?: any,
+  shouldNotRenderInFull?: boolean,
 }
 
-class ArticleCard extends React.Component<ArticleCardProps> {
+type ArticleCardState = {
+  hasRenderedInFull: boolean
+}
+
+class ArticleCard extends React.Component<ArticleCardProps, ArticleCardState> {
+  constructor(props: ArticleCardProps) {
+    super(props);
+    this.state = { hasRenderedInFull: false };
+  }
+
+  componentDidUpdate(props: ArticleCardProps) {
+    if (this.state.hasRenderedInFull) return;
+    if (!this.props.shouldNotRenderInFull) {
+      this.setState({ hasRenderedInFull: true });
+    }
+  }
+
   handleClick = () => {
     this.props.history.push(`/${this.props.category}/${this.props.articleId}`);
   }
 
   render() {
+    if (this.props.shouldNotRenderInFull && !this.state.hasRenderedInFull) {
+      return (
+        <div
+          className="article-card-container"
+          style={this.props.style}>
+          <div className="article-container" style={{ backgroundColor: '#fff' }} />
+          <span>Article {this.props.articleId}</span>
+        </div>
+      );
+    }
+
     return (
       <div
         onClick={this.handleClick}
-        className="article-card-container">
+        className="article-card-container"
+        style={this.props.style}>
         <Article {...this.props} displayOnly={true} />
         <div className="article-container-mask" />
         <span>Article {this.props.articleId}</span>

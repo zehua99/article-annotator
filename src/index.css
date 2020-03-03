@@ -1,4 +1,4 @@
-html, body {
+html, body, #root {
   font-size: 1.2rem;
   font-family: georgia, 'times new roman', times, serif;
   line-height: 1.5;
@@ -28,10 +28,6 @@ html, body {
 .article-container>* {
   padding-left: 2rem;
   padding-right: 2rem;
-}
-
-.article-container span {
-  /* user-select: none; */
 }
 
 .article-container>p>span>span {
@@ -241,13 +237,11 @@ html, body {
 }
 
 .article-card-panel-container {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, 12rem);
-  justify-content: space-around;
-  column-gap: 1rem;
-  padding: 1rem;
-  height: calc(100vh - 2rem);
-  overflow-y: scroll;
+  padding: 16px 16px 48px;
+}
+
+.article-card-panel-container > div {
+  overflow: visible !important;
 }
 
 .username-container {

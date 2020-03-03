@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect, ConnectedProps } from 'react-redux';
+import { AutoSizer, Grid, GridCellRenderer } from 'react-virtualized';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { StateType, getArticleIdList } from '../store';
 import { fetchArticleList } from '../socket';
@@ -18,46 +19,48 @@ const connector = connect(mapStateToProps);
 type PropsFromRedux = ConnectedProps<typeof connector>;
 type PropsType = ArticleCardPanelProps & PropsFromRedux;
 
-type ArticleCardPanelState = {
-  maxArticleCount: number;
-}
-
-class ArticleCardPanel extends React.Component<PropsType, ArticleCardPanelState> {
-  constructor(props: PropsType) {
-    super(props);
-    this.state = {
-      maxArticleCount: 20,
-    };
-  }
-
+class ArticleCardPanel extends React.Component<PropsType> {
   componentDidMount() {
     fetchArticleList(this.props.category);
   }
 
-  handleScroll = (event: React.UIEvent<HTMLDivElement>) => {
-    const el = event.currentTarget;
-    if (el.scrollTop + el.offsetHeight >= el.scrollHeight) {
-      setTimeout(() => {
-        this.setState(state => ({
-          maxArticleCount: state.maxArticleCount + 20,
-        }));
-      }, 1000);
+  getArticleCard: GridCellRenderer = ({ columnIndex, rowIndex, style, key, isScrolling, parent }) => {
+    const columnCount = Math.floor(parent.props.width / 240);
+    const index = columnIndex + rowIndex * columnCount;
+    if (index >= this.props.articleIds.length) {
+      return <div style={style} key={key} />;
     }
-  }
+    const articleId = this.props.articleIds[index];
+
+    return (
+      <div key={key} style={{ ...style, display: 'flex', justifyContent: 'center'}}>
+        <ArticleCard
+          category={this.props.category}
+          articleId={articleId}
+          shouldNotRenderInFull={isScrolling}
+          style={{ width: '12rem' }} />
+      </div>
+    );
+  };
 
   render() {
     return (
-      <div className="article-card-panel-container" onScroll={this.handleScroll}>
-        {(this.props.articleIds || [])
-          .slice(0, this.state.maxArticleCount)
-          .map(articleId => (
-          <ArticleCard
-            category={this.props.category}
-            articleId={articleId}
-            key={`article-card-${articleId}`}
-          />
-        ))}
-      </div>
+      <AutoSizer>
+        {({ height, width }) => {
+          const columnCount = Math.floor(width / 240);
+          return (
+            <Grid
+              className="article-card-panel-container"
+              cellRenderer={this.getArticleCard.bind(this)}
+              width={width}
+              height={height}
+              columnWidth={(width - 32) / columnCount}
+              columnCount={columnCount}
+              rowHeight={360}
+              rowCount={Math.ceil((this.props.articleIds || []).length / columnCount)} />
+          );
+        }}
+      </AutoSizer>
     );
   }
 }

@@ -41,6 +41,7 @@ class AnnotationPanel extends React.Component<PropsType> {
     const category: string = (match.params as any)['category'];
     this.props.setCurrentArticle(articleId, category);
     socket.emit('join article', { articleId, category });
+    window.scrollTo(0, 0);
   }
 
   leaveArticle() {
