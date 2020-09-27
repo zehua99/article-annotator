@@ -1,4 +1,4 @@
-### Article Annotator
+# Article Annotator
 The frontend for the multi-user article annotating tool. **[Demo](https://annotator.zehua.li)**
 
 ![image](https://user-images.githubusercontent.com/7604366/94355604-62837500-0053-11eb-83ea-a70f379ac4e4.png)
