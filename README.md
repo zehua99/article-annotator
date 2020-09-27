@@ -1,4 +1,5 @@
-This is the frontend project for the multi-user article annotating tool. **[Demo](https://annotator.zehua.li)**
+### Article Annotator
+The frontend for the multi-user article annotating tool. **[Demo](https://annotator.zehua.li)**
 
 ![image](https://user-images.githubusercontent.com/7604366/94355604-62837500-0053-11eb-83ea-a70f379ac4e4.png)
 ![image](https://user-images.githubusercontent.com/7604366/94355615-81820700-0053-11eb-9545-fe309e520eb8.png)
