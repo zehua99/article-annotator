@@ -15,3 +15,5 @@ You can host the frontend on GitHub Page, although you do need a server to host 
 6. Update the values in `src/config.ts` accordingly.
 7. Run `yarn publish` under the project’s root directory.
 8. Enable GitHub Page in your project setting page.
+
+To view annotations made by other users, open your browser DevTools and run `window.displayOthersAnnotation()` in the console.
