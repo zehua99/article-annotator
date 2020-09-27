@@ -5,6 +5,7 @@
     <title>Article Annotator</title>
     <script type="text/javascript">
       var segmentCount = 0;
+      if (window.location.origin.endsWith('.github.io')) segmentCount = 1;
 
       var l = window.location;
       l.replace(
