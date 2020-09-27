@@ -9,9 +9,12 @@ export const getAnnotationState = (store: StateType) => {
 
 export const getArticleAnnotations = (articleId: number, category: string) => createSelector(
   getAnnotationState,
-  annotations => annotations.filter(annotation => (
+  (state: StateType) => state.utils.displayOthersAnnotation,
+  getUsername,
+  (annotations, others, username) => annotations.filter(annotation => (
     annotation.articleId === articleId
     && annotation.category === category
+    && (others || annotation.annotator === username)
   )),
 );
 
@@ -45,7 +48,7 @@ export const isSentenceChecked = (articleId: number, category: string, sentenceI
 );
 
 export const getAnnotatedSentences = (articleId: number, category: string) => createSelector(
-  getAnnotationState,
+  getArticleAnnotations(articleId, category),
   getUsername,
   (annotations, username) => {
     const anns = annotations

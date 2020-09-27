@@ -16,6 +16,8 @@ export const CHANGE_USERNAME = 'CHANGE_USERNAME';
 
 export const CHANGE_SELECTED_TEXT = 'CHANGE_SELECTED_TEXT';
 export const SET_CURRENT_ARTICLE = 'SET_CURRENT_ARTICLE';
+export const DISPLAY_OTHERS_ANNOTATION = 'DISPLAY_OTHERS_ANNOTATION';
+export const SET_CATEGORY_LIST = 'SET_CATEGORY_LIST';
 
 /**
  * User
@@ -113,4 +115,16 @@ export type SetCurrentArticleActionType = {
   category: string
 }
 
-export type UtilityActionType = ChangeSelectedTextActionType | SetCurrentArticleActionType;
+export type DisplayOthersAnnotationActionType = {
+  type: typeof DISPLAY_OTHERS_ANNOTATION
+}
+
+export type SetCategoryListActionType = {
+  type: typeof SET_CATEGORY_LIST
+  categories: string[]
+}
+
+export type UtilityActionType = ChangeSelectedTextActionType
+  | SetCurrentArticleActionType
+  | DisplayOthersAnnotationActionType
+  | SetCategoryListActionType;

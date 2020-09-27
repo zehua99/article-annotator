@@ -1,10 +1,21 @@
 import socketIOClient from 'socket.io-client';
 import store, {
-  AnnotationType, UPDATE_CATEGORY_ARTICLE_LIST, UPDATE_ANNOTATION_RANK,
+  AnnotationType, UPDATE_CATEGORY_ARTICLE_LIST,
+  UPDATE_ANNOTATION_RANK, SET_CATEGORY_LIST,
   addAnnotation, removeAnnotation,
 } from './store';
+import { backend } from './config';
 
-const socket = socketIOClient(`https://backend.annotator.zehua.li/`);
+const socket = socketIOClient(backend);
+
+export const fetchCategoryList = () => {
+  socket.emit('refresh category list', (categories: string[]) => {
+    store.dispatch({
+      type: SET_CATEGORY_LIST,
+      categories,
+    });
+  });
+};
 
 export const fetchArticleList = (category: string) => {
   socket.emit('refresh article list', { category }, (articleIds: number[]) => {

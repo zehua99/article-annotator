@@ -2,6 +2,7 @@ import React, { ChangeEvent } from 'react';
 import { Dispatch } from 'redux';
 import { connect, ConnectedProps } from 'react-redux';
 import { CHANGE_USERNAME } from '../store';
+import { createHighlightStyle } from '../utils';
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
   setUsername: (username: string) => {
@@ -34,6 +35,7 @@ class SetUsername extends React.Component<PropsFromRedux, SetUsernameState> {
   changeUsername() {
     if (!this.props.setUsername) return;
     this.props.setUsername(this.state.username);
+    createHighlightStyle(this.state.username);
   }
 
   render() {
@@ -42,6 +44,7 @@ class SetUsername extends React.Component<PropsFromRedux, SetUsernameState> {
         <input
           placeholder="Username"
           className="username-input"
+          onKeyPress={(event: React.KeyboardEvent) => { if (event.key === 'Enter') this.changeUsername() }}
           onChange={this.handleChange} />
         <span
           className="username-button"

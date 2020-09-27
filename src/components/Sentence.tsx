@@ -40,6 +40,24 @@ class Sentence extends React.Component<PropsType> {
   ref = React.createRef<HTMLSpanElement>();
 
   componentDidMount() {
+    this.scrollToSentenceInPlainView();
+  }
+
+  componentDidUpdate(prev: PropsType) {
+    this.scrollToSentenceInPlainView();
+    if (prev.shouldScrollIntoView === this.props.shouldScrollIntoView) return;
+    if (this.props.shouldScrollIntoView) {
+      if (!this.ref || !this.ref.current) return;
+      scrollIntoView(this.ref.current, { behavior: 'smooth' });
+      const isHotKeyTriggered = this.props.selectedSentence?.selectedIn === 'HOT_KEY';
+      if (!isHotKeyTriggered) {
+        this.ref.current.classList.add('selected-sentence');
+        setTimeout(() => this.ref.current?.classList.remove('selected-sentence'), 1500);
+      }
+    }
+  }
+
+  scrollToSentenceInPlainView() {
     setTimeout(() => {
       if (this.props.plainText && this.props.annotators.length > 0
         && this.ref && this.ref.current) {
@@ -53,19 +71,6 @@ class Sentence extends React.Component<PropsType> {
         parent.scrollTo(0, this.ref.current.offsetTop - 100);
       }
     }, 0);
-  }
-
-  componentDidUpdate(prev: PropsType) {
-    if (prev.shouldScrollIntoView === this.props.shouldScrollIntoView) return;
-    if (this.props.shouldScrollIntoView) {
-      if (!this.ref || !this.ref.current) return;
-      scrollIntoView(this.ref.current, { behavior: 'smooth' });
-      const isHotKeyTriggered = this.props.selectedSentence?.selectedIn === 'HOT_KEY';
-      if (!isHotKeyTriggered) {
-        this.ref.current.classList.add('selected-sentence');
-        setTimeout(() => this.ref.current?.classList.remove('selected-sentence'), 1500);
-      }
-    }
   }
 
   handleClick = () => {

@@ -26,7 +26,9 @@ const initialState: StateType = {
     loadedArticles: [],
   },
   annotations: [],
-  utils: {},
+  utils: {
+    categories: [],
+  },
 };
 
 const reducer = combineReducers({
@@ -35,6 +37,6 @@ const reducer = combineReducers({
   articles: articleReducer,
   colors: colorReducer,
   utils: utilityReducer,
-})
+});
 
 export default createStore(reducer, initialState, applyMiddleware(thunk));
